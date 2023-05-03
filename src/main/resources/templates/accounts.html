@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+	<head>
+		<title>Accounts</title>
+	</head>
+	<body>
+		<h1>Accounts</h1>
+		    <a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.userId}"></a><br/>
+			<strong>Username:</strong> <span th:text="${user.username}"></span><br/>
+			<strong>Name:</strong> <span th:text="${user.name}"></span><br/>
+			<hr style="margin: 1em 0em;"/>
+			<div th:each="account : ${user.accounts}">
+				<a th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId},accountId=${account.accountId})}" th:text="${account.accountName}"></a>
+			</div>
+			<div style="margin-top: 1em;">
+			<div>
+			<a th:href="@{/users/{userId}(userId=${user.userId})}">Back to User View</a>
+			</div>
+			<div>
+			<a th:href="@{/users}">ALL Users</a>
+			</div>
+			</div>
+	</body>
+</html>
+		

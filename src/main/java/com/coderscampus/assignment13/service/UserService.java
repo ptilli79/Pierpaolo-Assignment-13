@@ -19,6 +19,7 @@ public class UserService {
 	
 	@Autowired
 	private UserRepository userRepo;
+	
 	@Autowired
 	private AccountRepository accountRepo;
 	
@@ -42,13 +43,17 @@ public class UserService {
 			return new User();
 	}
 	
-	public List<User> findAll () {
-		//return userRepo.findAllUsersWithAccountsAndAddresses();
-		return userRepo.findAll();
+	public Set<User> findAll () {
+		return userRepo.findAllUsersWithAccountsAndAddresses();
 	}
 	
 	public User findById(Long userId) {
 		Optional<User> userOpt = userRepo.findById(userId);
+		return userOpt.orElse(new User());
+	}
+	
+	public User findByIdWithAccounts(Long userId) {
+		Optional<User> userOpt = userRepo.findByIdWithAccounts(userId);
 		return userOpt.orElse(new User());
 	}
 

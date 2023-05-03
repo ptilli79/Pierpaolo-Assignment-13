@@ -5,9 +5,9 @@
 	</head>
 	<body>
 		<h1>Users</h1>
-		
-		<div th:if="${#lists.size(users) == 1}">
-			<form action="" method="post">
+		<form action="" method="post">
+			<div th:if="${#lists.size(users) == 1}">
+				<input type="hidden" th:field="${user.userId}"/>
 				<div>
 					Username: <input type="text" th:field="${user.username}" />
 				</div>
@@ -18,21 +18,56 @@
 					Full Name: <input type="text" th:field="${user.name}" />
 				</div>
 				<div>
+					Address Line 1: <input type="text" th:field="${address.addressLine1}"/>
+				</div>
+				<div>
+					Address Line 2: <input type="text" th:field="${address.addressLine2}"/>
+				</div>
+				<div>
+					City: <input type="text" th:field="${address.city}"/>
+				</div>
+				<div>
+					Region: <input type="text" th:field="${address.region}"/>
+				</div>
+				<div>
+					Country: <input type="text" th:field="${address.country}"/>
+				</div>
+				<div>
+					Zip Code: <input type="text" th:field="${address.zipCode}"/>
+				</div>
+				<div style="margin-top: 1em;">
+				<div>
 					<input type="submit" value="Update User Account" />
 				</div>
-			</form>
+			</div>
+		</form>
+			<div th:if="${#lists.size(users) == 1}">
 			<form th:action="@{/users/{userId}/delete(userId=${user.userId})}" method="post">
 				<input type="submit" value="Delete User Account" />
 			</form>
-		</div>
+			</div>
+			<hr style="margin: 1em 0em;"/>
+			<div th:if="${#lists.size(users) == 1}">
+			<form th:action="@{/users/{userId}/accounts(userId=${user.userId})}" method="post">
+				<h3>Accounts</h3>
+				<div th:each="account : ${user.accounts}">
+					<a th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId},accountId=${account.accountId})}" th:text="${account.accountName}"></a>
+				</div>
+				<input style="margin-top: 1em;" type="submit" value="Create New Bank Account"/>
+			</form>
+			<div style="margin-top: 1em;">
+				<a href="/users">ALL Users</a>
+			</div>
+			</div>
+		 	
 		
 		<div th:unless="${#lists.size(users) == 1}" th:each="user : ${users}">
-		    <span th:text="${user.userId}"></span><br/>
-			<span th:text="${user.username}"></span><br/>
-			<span th:text="${user.name}"></span><br/>
-			<span th:text="${user.password}"></span>
+		    <a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.userId}"></a><br/>
+			<strong>Username:</strong> <span th:text="${user.username}"></span><br/>
+			<strong>Name:</strong> <span th:text="${user.name}"></span><br/>
+			<strong>Password:</strong> <span th:text="${user.password}"></span>
 			<div th:each="account : ${user.accounts}">
-				<span th:text="${account.accountName}"></span>
+				<a th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId},accountId=${account.accountId})}" th:text="${account.accountName}"></a>
 			</div>
 			<hr/>
 		</div>
