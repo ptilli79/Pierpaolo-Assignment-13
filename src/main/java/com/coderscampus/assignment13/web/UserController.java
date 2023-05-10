@@ -1,6 +1,8 @@
 package com.coderscampus.assignment13.web;
 
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -41,6 +43,7 @@ public class UserController {
 		address.setUser(user);
 		address.setUserId(user.getUserId());
 		user.setAddress(address);
+		user.setCreatedDate(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
 		addressService.save(address);
 		userService.saveUser(user);
 		return "redirect:/register";
@@ -78,10 +81,13 @@ public class UserController {
 		System.out.println(user);
 		User existingUser = userService.findByIdWithAccounts(user.getUserId());
 		user.setAccounts(existingUser.getAccounts());
-		System.out.println(user);
 		user.setAddress(address);
 		address.setUser(user);
 		address.setUserId(user.getUserId());
+		if (user.getPassword()== null || user.getPassword() == "" ){
+			user.setPassword(existingUser.getPassword());	 
+		}
+		user.setCreatedDate(existingUser.getCreatedDate());
 		userService.saveUser(user);
 		return "redirect:/users/"+user.getUserId();
 	}
@@ -107,21 +113,18 @@ public class UserController {
 		return "users";
 	}
 	
-//	@PostMapping("/users/{userId}")
-//	public String postOneUser (User user) {
-//		userService.saveUser(user);
-//		return "redirect:/users/"+user.getUserId();
-//	}
-	
 	@PostMapping("/users/{userId}")
 	public String postOneUser (@PathVariable Long userId, User user, Address address) {
 		User existingUser = userService.findByIdWithAccounts(userId);
 		user.setAccounts(existingUser.getAccounts());
 		//addressService.save(user.getAddress());
-		System.out.println(user);
 		user.setAddress(address);
 		address.setUser(user);
 		address.setUserId(userId);
+		if (user.getPassword()== null || user.getPassword() == "" ){
+			user.setPassword(existingUser.getPassword());	 
+		}
+		user.setCreatedDate(existingUser.getCreatedDate());
 		userService.saveUser(user);
 		return "redirect:/users/"+user.getUserId();
 	}

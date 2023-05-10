@@ -11,9 +11,8 @@
 				<div>
 					Username: <input type="text" th:field="${user.username}" />
 				</div>
-				<div>
 					Password: <input type="password" th:field="${user.password}" />
-				</div>
+			
 				<div>
 					Full Name: <input type="text" th:field="${user.name}" />
 				</div>
@@ -35,7 +34,7 @@
 				<div>
 					Zip Code: <input type="text" th:field="${address.zipCode}"/>
 				</div>
-				<div style="margin-top: 1em;">
+				<div style="margin-top: 1em;"> </div>
 				<div>
 					<input type="submit" value="Update User Account" />
 				</div>
@@ -65,7 +64,12 @@
 		    <a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.userId}"></a><br/>
 			<strong>Username:</strong> <span th:text="${user.username}"></span><br/>
 			<strong>Name:</strong> <span th:text="${user.name}"></span><br/>
-			<strong>Password:</strong> <span th:text="${user.password}"></span>
+			<div th:if="${user.address.addressLine1 != '' && user.address.addressLine1 != null}">
+			<strong>Address Line1:</strong> <span th:text="${user.address.addressLine1}"></span>
+			</div>
+			<div th:if="${user.address.addressLine2 != '' && user.address.addressLine2 != null}">
+			<strong>Address Line2:</strong> <span th:text="${user.address.addressLine2}"></span>
+			</div>
 			<div th:each="account : ${user.accounts}">
 				<a th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId},accountId=${account.accountId})}" th:text="${account.accountName}"></a>
 			</div>
